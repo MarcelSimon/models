@@ -639,6 +639,7 @@ def create_estimator_and_inputs(run_config,
       eval_config=eval_config,
       eval_input_config=eval_on_train_input_config,
       model_config=model_config)
+  eval_interval_secs = eval_config.eval_interval_secs
   predict_input_fn = create_predict_input_fn(
       model_config=model_config, predict_input_config=eval_input_configs[0])
 
@@ -674,6 +675,7 @@ def create_estimator_and_inputs(run_config,
       eval_input_fns=eval_input_fns,
       eval_input_names=eval_input_names,
       eval_on_train_input_fn=eval_on_train_input_fn,
+      eval_interval_secs = eval_interval_secs,
       predict_input_fn=predict_input_fn,
       train_steps=train_steps)
 
@@ -685,7 +687,8 @@ def create_train_and_eval_specs(train_input_fn,
                                 train_steps,
                                 eval_on_train_data=False,
                                 final_exporter_name='Servo',
-                                eval_spec_names=None):
+                                eval_spec_names=None,
+                                eval_interval_secs=300):
   """Creates a `TrainSpec` and `EvalSpec`s.
 
   Args:
@@ -728,7 +731,8 @@ def create_train_and_eval_specs(train_input_fn,
             name=eval_spec_name,
             input_fn=eval_input_fn,
             steps=None,
-            exporters=exporter))
+            exporters=exporter,
+            throttle_secs=eval_interval_secs))
 
   if eval_on_train_data:
     eval_specs.append(

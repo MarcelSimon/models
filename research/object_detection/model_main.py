@@ -73,6 +73,7 @@ def main(unused_argv):
   train_input_fn = train_and_eval_dict['train_input_fn']
   eval_input_fns = train_and_eval_dict['eval_input_fns']
   eval_on_train_input_fn = train_and_eval_dict['eval_on_train_input_fn']
+  eval_interval_secs = train_and_eval_dict['eval_interval_secs']
   predict_input_fn = train_and_eval_dict['predict_input_fn']
   train_steps = train_and_eval_dict['train_steps']
 
@@ -99,7 +100,8 @@ def main(unused_argv):
         eval_on_train_input_fn,
         predict_input_fn,
         train_steps,
-        eval_on_train_data=False)
+        eval_on_train_data=False,
+        eval_interval_secs=eval_interval_secs)
 
     # Currently only a single Eval Spec is allowed.
     tf.estimator.train_and_evaluate(estimator, train_spec, eval_specs[0])
